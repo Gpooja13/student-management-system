@@ -69,6 +69,7 @@ Before getting started, ensure that you have the following installed:
    ```bash
    npm run dev
    ```
+The system should now be live at [http://localhost:5000](http://localhost:5000).
 
 5. **Start the frontend**:
 
@@ -78,7 +79,7 @@ Before getting started, ensure that you have the following installed:
    npm start
    ```
 
-6. The system should now be live at [http://localhost:3000](http://localhost:3000).
+6. The frontend system should now be live at [http://localhost:3000](http://localhost:3000).
 
 
 ## Contributing
