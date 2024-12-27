@@ -6,8 +6,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 // const nodemailer = require("nodemailer");
 
-// jwtSecret = process.env.JWT_SECRET;
-
 const signUp = (req, res, next) => {
   try {
     const { name, email, password } = req.body;

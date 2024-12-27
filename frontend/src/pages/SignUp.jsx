@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios"; // Make sure to install axios with `npm install axios`
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -7,21 +8,44 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!^%*?&]{6,15}$/;
+
+  const handleSignUpSubmit = async (e) => {
     e.preventDefault();
-
     setError(null);
     setSuccessMessage(null);
 
-    try {
-      const response = await axios.post("http://localhost:5000/api/auth/signUp", {
-        name,
-        email,
-        password,
-      });
+    if (!emailRegex.test(email)) {
+      setError("Invalid email");
+      return;
+    } else if (!passwordRegex.test(password)) {
+      setError(
+        "Password must container at least 6 characters including at least 1 number, 1 lowercase letter, 1 uppercase letter and 1 special characters"
+      );
+      return;
+    }
 
-      setSuccessMessage(response.data.message);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signUp",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+
+      if (response.data.message) {
+        setSuccessMessage(response.data.message);
+        navigate("/signIn");
+      } else if (response.data.error) {
+        setError(response.data.error);
+      } else {
+        setError("Error while fetching");
+      }
     } catch (err) {
       setError(err.response?.data?.error || "Something went wrong!");
     }
@@ -41,10 +65,13 @@ const SignUp = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSignUpSubmit}>
           {/* Name Input */}
           <div>
-            <label htmlFor="name" className="block text-sm/6 font-medium text-gray-900">
+            <label
+              htmlFor="name"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               Name
             </label>
             <div className="mt-2">
@@ -62,7 +89,10 @@ const SignUp = () => {
 
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               Email address
             </label>
             <div className="mt-2">
@@ -80,7 +110,10 @@ const SignUp = () => {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
+            <label
+              htmlFor="password"
+              className="block text-sm/6 font-medium text-gray-900"
+            >
               Password
             </label>
             <div className="mt-2">
@@ -98,7 +131,9 @@ const SignUp = () => {
 
           {/* Error or Success Message */}
           {error && <div className="text-red-500 text-sm">{error}</div>}
-          {successMessage && <div className="text-green-500 text-sm">{successMessage}</div>}
+          {successMessage && (
+            <div className="text-green-500 text-sm">{successMessage}</div>
+          )}
 
           {/* SignUp Button */}
           <div>
@@ -113,7 +148,10 @@ const SignUp = () => {
 
         <p className="mt-10 text-center text-sm/6 text-gray-500">
           Already a member?{" "}
-          <a href="/signIn" className="font-semibold text-indigo-600 hover:text-indigo-500">
+          <a
+            href="/signIn"
+            className="font-semibold text-indigo-600 hover:text-indigo-500"
+          >
             Sign In
           </a>
         </p>
