@@ -42,6 +42,7 @@ Before getting started, ensure that you have the following installed:
    - **Backend**:
 
      ```bash
+     cd backend
      npm install
      ```
 
