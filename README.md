@@ -67,6 +67,7 @@ Before getting started, ensure that you have the following installed:
    Navigate to the backend directory and run the following command:
 
    ```bash
+   cd backend
    npm run dev
    ```
 The system should now be live at [http://localhost:5000](http://localhost:5000).
